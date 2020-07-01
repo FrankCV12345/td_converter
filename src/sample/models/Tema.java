@@ -12,4 +12,7 @@ import java.util.List;
 public class Tema {
     private String subtitulo;
     private List<Parrafo> parrafos = new ArrayList<>();
+    public Tema(String subtitulo){
+        this.subtitulo = subtitulo;
+    }
 }

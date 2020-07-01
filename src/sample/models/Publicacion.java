@@ -3,8 +3,10 @@ package sample.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import sample.utilitarios.ValidateStringUtilitario;
 
+import static sample.utilitarios.ValidateStringUtilitario.searchDefinicionsAndLinks;
+import static sample.utilitarios.ValidateStringUtilitario.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Publicacion {
+
     public final static String DEFINICIONNAME ="definiciones";
     public final static String AUTORSNNAME ="autores";
     public final static String LINKSNAME ="links";
@@ -35,11 +38,9 @@ public class Publicacion {
         this.autores.add(autor);
     }
     public boolean isValid(){
-      if(this.img.length() >= 2 && this.tipo.getTipoPublicacion() != null && this.autores.size() > 0 && this.tipo.getCategoria().length() >= 2){
-          return true;
-      }  else {
-          return false;
-      }
+        boolean imgValid = ValidateStringUtilitario.isValid(this.img);
+        boolean categorieValid = ValidateStringUtilitario.isValid(this.tipo.getCategoria());
+        return (imgValid && this.tipo.getTipoPublicacion() != null && this.autores.size() > 0 && categorieValid ) ? true : false;
     }
     public Optional<Publicacion> isValidForConverter() throws Exception {
 
@@ -63,5 +64,15 @@ public class Publicacion {
                 break;
         }
     }
-
+    public void addParrafoForintro(Parrafo parrafo){
+        this.introducion.add(parrafo);
+    }
+    public void addParrafoForTema(String parrafoTexto ){
+        this.temas.get(this.temas.size() - 1 )
+                .getParrafos()
+                .add(new Parrafo(searchDefinicionsAndLinks(parrafoTexto,this.definiciones)));
+    }
+    public void addSubtituloForTema(String subtitulo){
+        this.temas.add(new Tema(subtitulo));
+    }
 }
