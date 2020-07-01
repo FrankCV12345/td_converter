@@ -16,7 +16,6 @@ public class ConverterUtilitarios {
                 .map(paragraph -> processParagraph(publicacion,paragraph))
                 .collect(Collectors.toList());
     }
-
     private static Publicacion processParagraph(Publicacion publicacion,XWFParagraphPublication paragraphPublication){
         String texto = paragraphPublication.getText();
         if(paragraphPublication.isTitle()){
@@ -28,14 +27,13 @@ public class ConverterUtilitarios {
         }
         return  publicacion;
     }
-
-    public static void converterToFileJson(Publicacion publicacion , String carpeta , String nombreArchivo , Gson gson) throws IOException {
+    public static void converterToFileJson(IPublicacion publicacion , String carpeta , String nombreArchivo , Gson gson) throws IOException {
             FileWriter file = null;
             file = new FileWriter(carpeta+"\\"+ValidateStringUtilitario.recortName(nombreArchivo)+".json");
             gson.toJson(publicacion,file);
             file.close();
     }
-    public static String[] processWord(Publicacion p, AnchorPane anchorContenerdorProgress, ItemForProgress itemForProgress) throws Exception {
+    public static String[] processWord(Publicacion p, AnchorPane anchorContenerdorProgress) throws Exception {
         FileChooser fc =  new FileChooser();
         fc.getExtensionFilters().addAll( new FileChooser.ExtensionFilter("Documents","*.docx"));
         File fileSelected = fc.showOpenDialog(null);
@@ -57,8 +55,4 @@ public class ConverterUtilitarios {
             throw new Exception("No seleciono ningun archivo");
         }
     }
-
-
-
-
 }

@@ -11,10 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-import sample.models.Autor;
-import sample.models.Dicionario;
-import sample.models.ItemForProgress;
-import sample.models.Publicacion;
+import sample.models.*;
 import sample.utilitarios.FormUtilitarios;
 import static sample.utilitarios.FormUtilitarios.*;
 import static sample.utilitarios.ConverterUtilitarios.*;
@@ -88,7 +85,7 @@ public class Controller implements Initializable {
         if(publicacion.isValid()) {
             String[] nombreAndCarpeta = new String[0];
             try {
-                nombreAndCarpeta = processWord(publicacion,anchorContenerdorProgress, itemForProgress);
+                nombreAndCarpeta = processWord(publicacion,anchorContenerdorProgress);
                 nombreArchivo = nombreAndCarpeta[0];
                 carpeta = nombreAndCarpeta[1];
             } catch (Exception e) {
@@ -107,7 +104,7 @@ public class Controller implements Initializable {
             showAlert("Publicacion in valida",e.getMessage(),alertError);
         }
     }
-    public Consumer<Publicacion> convert = ( p ) -> {
+    public Consumer<IPublicacion> convert = (p) -> {
         try {
             anchorContenerdorProgress.setVisible(true);
             converterToFileJson(p,carpeta,nombreArchivo,gson);
@@ -116,7 +113,8 @@ public class Controller implements Initializable {
             clearAllForm(
                     Arrays.asList(inputNombreImg,inputCategoria,inputAutores,inputKeyDefinicion,inputDefinicion,inputKeyUrl,inputUrl),
                     Arrays.asList(comboTiposPublicacion),
-                    Arrays.asList(lstViewAutores,lstViewDefiniciones,lstViewLinks));
+                    Arrays.asList(lstViewAutores,lstViewDefiniciones,lstViewLinks)
+            );
         } catch (IOException e) {
             showAlert("Error interno",e.getMessage(),alertError);
         }finally {
@@ -135,6 +133,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         comboTiposPublicacion.setItems(itemsTipoPublicacion);
+
         inputNombreImg.textProperty()
                 .addListener( (obs,oldText,newText) -> publicacion.setImg(newText));
 
@@ -164,10 +163,5 @@ public class Controller implements Initializable {
                 }
             }
         });
-    }
-
-    private void prueba(String string1 , String string2){
-        string1 = " loque sea";
-        string2 = "cualquier cosa";
     }
 }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import sample.utilitarios.ValidateStringUtilitario;
 
 import static sample.utilitarios.ValidateStringUtilitario.searchDefinicionsAndLinks;
-import static sample.utilitarios.ValidateStringUtilitario.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Publicacion {
+public class Publicacion implements IPublicacion {
 
     public final static String DEFINICIONNAME ="definiciones";
     public final static String AUTORSNNAME ="autores";
@@ -42,14 +41,10 @@ public class Publicacion {
         boolean categorieValid = ValidateStringUtilitario.isValid(this.tipo.getCategoria());
         return (imgValid && this.tipo.getTipoPublicacion() != null && this.autores.size() > 0 && categorieValid ) ? true : false;
     }
-    public Optional<Publicacion> isValidForConverter() throws Exception {
-
+    public Optional<IPublicacion> isValidForConverter() throws Exception {
         boolean estate = (this.isValid() && (this.getTemas().size() > 0) ) ? true : false;
-
         if(estate) return Optional.of(this);
-
         throw new Exception("Publicacion no valida");
-
     }
     public void removeItem(int index , String nameList){
         switch (nameList){
