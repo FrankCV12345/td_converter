@@ -81,32 +81,30 @@ public class Controller implements Initializable {
     private static String nombreArchivo =  "";
     Gson gson = new Gson();
     public void UploadWord(MouseEvent event)  {
-
-        if(publicacion.isValid()) {
-            String[] nombreAndCarpeta = new String[0];
-            try {
-                nombreAndCarpeta = processWord(publicacion,anchorContenerdorProgress);
-                nombreArchivo = nombreAndCarpeta[0];
-                carpeta = nombreAndCarpeta[1];
-            } catch (Exception e) {
-                showAlert("Error interno",e.getMessage(),alertError);
-            }
+        String[] nombreAndCarpeta = new String[0];
+        try {
+            anchorContenerdorProgress.setVisible(true);
+            nombreAndCarpeta = processWord(publicacion);
+            nombreArchivo = nombreAndCarpeta[0];
+            carpeta = nombreAndCarpeta[1];
+        } catch (Exception e) {
+            showAlert("Error", e.getMessage(), alertError);
+        }finally {
+            anchorContenerdorProgress.setVisible(false);
         }
-        else {
-            showAlert("Falta llenar campos","Antes de subir el word debe ingresar todos los campos marcados con *", alertError);
-        }
-
     }
     public void converter(MouseEvent event){
         try {
+            anchorContenerdorProgress.setVisible(true);
             publicacion.isValidForConverter().ifPresent(convert);
         } catch (Exception e) {
-            showAlert("Publicacion in valida",e.getMessage(),alertError);
+            showAlert("Error",e.getMessage(),alertError);
+        }finally {
+            anchorContenerdorProgress.setVisible(false);
         }
     }
     public Consumer<IPublicacion> convert = (p) -> {
         try {
-            anchorContenerdorProgress.setVisible(true);
             converterToFileJson(p,carpeta,nombreArchivo,gson);
             publicacion = new Publicacion();
             showAlert("Proceso terminado","Archivo procesado puede encontrar el archivo .Json en : "+carpeta,alertInformation);
@@ -117,18 +115,16 @@ public class Controller implements Initializable {
             );
         } catch (IOException e) {
             showAlert("Error interno",e.getMessage(),alertError);
-        }finally {
-            anchorContenerdorProgress.setVisible(false);
         }
     };
     public void  addAdutors(MouseEvent event){
         new Autor(inputAutores.getText()).isValidOptional().ifPresent( autor -> addAutor(autor,lstViewAutores,publicacion,inputAutores));
     }
     public void  addDefinicion(MouseEvent event){
-        new Dicionario(inputKeyDefinicion.getText(),inputDefinicion.getText(),Publicacion.DEFINICIONNAME).isValidOpcional().ifPresent( definition -> add(publicacion,lstViewDefiniciones,Arrays.asList(inputKeyDefinicion,inputDefinicion),definition));
+        new Dicionario(inputKeyDefinicion.getText(),inputDefinicion.getText(),Publicacion.DEFINICIONNAME).isValidOpcional().ifPresent( definition -> FormUtilitarios.addDefinicion(publicacion,lstViewDefiniciones,Arrays.asList(inputKeyDefinicion,inputDefinicion),definition));
     }
     public void addLink(MouseEvent event){
-        new Dicionario(inputKeyUrl.getText(),inputUrl.getText(),Publicacion.LINKSNAME).isValidOpcional().ifPresent(link -> add(publicacion,lstViewLinks,Arrays.asList(inputKeyUrl,inputUrl),link));
+        new Dicionario(inputKeyUrl.getText(),inputUrl.getText(),Publicacion.LINKSNAME).isValidOpcional().ifPresent(link -> FormUtilitarios.addDefinicion(publicacion,lstViewLinks,Arrays.asList(inputKeyUrl,inputUrl),link));
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {

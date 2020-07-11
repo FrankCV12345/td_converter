@@ -3,26 +3,26 @@ package sample.utilitarios;
 import javafx.scene.control.*;
 import sample.models.Autor;
 import sample.models.Dicionario;
-import sample.models.ExceptionsModels.DefinicionInvalidException;
 import sample.models.Publicacion;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Consumer;
 
 public class FormUtilitarios {
-    public static void clearTextField(List<TextInputControl> TextInputControls){
-        TextInputControls.forEach( TextInputControl -> TextInputControl.setText(""));
-    }
-    public static  void resetCombo(List<ComboBox> Combos){
-        Combos.forEach(comboBox -> comboBox.getSelectionModel().clearSelection());
-    }
-    public static void  clearListView(List<ListView> listViews){
-        listViews.forEach(listView -> listView.getItems().clear());
-    }
+    private static Consumer<List<ListView>> removeItemsListView =
+            l -> l.forEach(listView -> listView.getItems().clear());
+
+    private static Consumer<List<ComboBox>> clearSelectionCombos =
+            comboxs -> comboxs.forEach(comboBox -> comboBox.getSelectionModel().clearSelection());
+
+    private static Consumer<List<TextInputControl>> clearTextFields =
+            textInputControls -> textInputControls.forEach(textInputControl -> textInputControl.setText(""));
+
     public static void clearAllForm(List<TextInputControl> TextInputControls,List<ComboBox> Combos,List<ListView> listViews){
-        clearTextField(TextInputControls);
-        resetCombo(Combos);
-        clearListView(listViews);
+        removeItemsListView.accept(listViews);
+        clearSelectionCombos.accept(Combos);
+        clearTextFields.accept(TextInputControls);
+
     }
     public static void deleteItem(Publicacion publicacion, ListView listView, Alert confirmation,String NAMELIST){
         int index = listView.getSelectionModel().getSelectedIndex();
@@ -36,7 +36,7 @@ public class FormUtilitarios {
             }
         }
     }
-    public static void add(Publicacion publicacion,ListView lstView,List<TextField> textFieldList,Dicionario definicion){
+    public static void addDefinicion(Publicacion publicacion, ListView lstView, List<TextField> textFieldList, Dicionario definicion){
         textFieldList.forEach( t -> t.setText(""));
         lstView.getItems().add(definicion.getPalabra()+" : "+definicion.getDefinicion());
         publicacion.addDefinicion(definicion);

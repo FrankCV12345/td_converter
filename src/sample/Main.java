@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Convertidor de Word a Json");
+        primaryStage.setTitle("CWJ");
         Image icon = new Image("file:icon.png");
         primaryStage.getIcons().add(icon);
         primaryStage.setScene(new Scene(root));
