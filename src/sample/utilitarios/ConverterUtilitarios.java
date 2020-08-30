@@ -33,7 +33,7 @@ public class ConverterUtilitarios {
 
     public static void converterToFileJson(IPublicacion publicacion , String carpeta , String nombreArchivo , Gson gson) throws IOException {
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(carpeta+"\\"+ValidateStringUtilitario.recortName(nombreArchivo)+".json"), "UTF-8"
+                new FileOutputStream(carpeta+"\\"+ValidateStringUtilitario.obtenerNombreSinExtencion(nombreArchivo)+".json"), "UTF-8"
         ));
         gson.toJson(publicacion,out);
         out.close();

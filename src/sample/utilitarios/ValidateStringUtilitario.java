@@ -3,27 +3,23 @@ package sample.utilitarios;
 import sample.models.Dicionario;
 import sample.models.Publicacion;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
 public class ValidateStringUtilitario {
+    private static final int MIN_CARACTERES = 2;
     public static boolean isValid(String cadena){
-        if(cadena != null && cadena.length() >= 2 && cadena.split(" ").length > 0){
-            return  true;
-        }else{
-            return false;
-        }
+        return (cadena != null && cadena.length() >= MIN_CARACTERES && cadena.split(" ").length > 0) ? true : false;
     }
-    public static String recortName(String name){
-        String[] arrgname = name.split("");
-        String nvoNombre = "";
-        for (String letra: arrgname){
-            if(letra.equals(".")){
-                break;
-            }
-            nvoNombre += letra;
-        }
-        return nvoNombre;
+    public static String obtenerNombreSinExtencion(String nameFile){
+        String[] lettersOfName = nameFile.split("");
+        String name = "";
+        for (String letra: lettersOfName)
+            if(letra.equals(".")) break;
+            else name += letra;
+
+        return name;
     }
 
     public static String searchDefinicionsAndLinks(String  parrafo , List<Dicionario> definicions ){
