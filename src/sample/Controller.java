@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
+import lombok.extern.log4j.Log4j2;
 import sample.models.*;
 import sample.utilitarios.FormUtilitarios;
 import static sample.utilitarios.FormUtilitarios.*;
@@ -25,7 +26,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-
+@Log4j2
 public class Controller implements Initializable {
 
     //BUTTONS
@@ -90,6 +91,7 @@ public class Controller implements Initializable {
             carpeta = nombreAndCarpeta[1];
         } catch (Exception e) {
             showAlert("Error", e.getMessage(), alertError);
+            log.error(e);
         }finally {
             anchorContenerdorProgress.setVisible(false);
         }
