@@ -80,7 +80,8 @@ public class Controller implements Initializable {
     private static String carpeta = "";
     private static String nombreArchivo =  "";
     Gson gson = new Gson();
-    public void UploadWord(MouseEvent event)  {
+
+    public void UploadWord(MouseEvent event){
         String[] nombreAndCarpeta = new String[0];
         try {
             anchorContenerdorProgress.setVisible(true);
@@ -93,6 +94,7 @@ public class Controller implements Initializable {
             anchorContenerdorProgress.setVisible(false);
         }
     }
+
     public void converter(MouseEvent event){
         try {
             anchorContenerdorProgress.setVisible(true);

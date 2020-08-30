@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 public class ValidateStringUtilitario {
     public static boolean isValid(String cadena){
-        if(cadena.length() >= 2 && cadena.length() >= 2 && cadena.split(" ").length > 0 ){
+        if(cadena != null && cadena.length() >= 2 && cadena.split(" ").length > 0){
             return  true;
         }else{
             return false;
