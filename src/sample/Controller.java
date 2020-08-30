@@ -91,7 +91,7 @@ public class Controller implements Initializable {
             carpeta = nombreAndCarpeta[1];
         } catch (Exception e) {
             showAlert("Error", e.getMessage(), alertError);
-            log.error(e);
+            log.error(e.getMessage(),e);
         }finally {
             anchorContenerdorProgress.setVisible(false);
         }
@@ -103,6 +103,7 @@ public class Controller implements Initializable {
             publicacion.isValidForConverter().ifPresent(convert);
         } catch (Exception e) {
             showAlert("Error",e.getMessage(),alertError);
+            log.error(e.getMessage(),e);
         }finally {
             anchorContenerdorProgress.setVisible(false);
         }
@@ -119,6 +120,7 @@ public class Controller implements Initializable {
             );
         } catch (IOException e) {
             showAlert("Error interno",e.getMessage(),alertError);
+            log.error(e.getMessage(),e);
         }
     };
     public void  addAdutors(MouseEvent event){
