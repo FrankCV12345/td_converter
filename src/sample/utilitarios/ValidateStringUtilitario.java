@@ -1,7 +1,7 @@
 package sample.utilitarios;
 
-import sample.models.Dicionario;
-import sample.models.Publicacion;
+import sample.models.intities.Dicionario;
+import sample.models.intities.Publicacion;
 
 import java.util.List;
 import java.util.function.Function;

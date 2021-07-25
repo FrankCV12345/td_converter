@@ -11,9 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-import lombok.extern.log4j.Log4j2;
-import sample.models.*;
+import sample.models.intities.*;
 import sample.utilitarios.FormUtilitarios;
+
 import static sample.utilitarios.FormUtilitarios.*;
 import static sample.utilitarios.ConverterUtilitarios.*;
 import static sample.utilitarios.AlertUtilitario.*;
@@ -26,7 +26,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-@Log4j2
+
 public class Controller implements Initializable {
 
     //BUTTONS
@@ -70,19 +70,19 @@ public class Controller implements Initializable {
     //ALERTS
     Alert alertError = new Alert(Alert.AlertType.ERROR);
     Alert alertInformation = new Alert(Alert.AlertType.INFORMATION);
-    Alert confirmation =  new Alert(Alert.AlertType.CONFIRMATION);
+    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
 
     //HyperLink
     @FXML
     Hyperlink MySite;
 
-    ObservableList<String> itemsTipoPublicacion = FXCollections.observableArrayList("Tradutema","Traduarticulo","Traduley","Traduinspiracion");
+    ObservableList<String> itemsTipoPublicacion = FXCollections.observableArrayList("Tradutema", "Traduarticulo", "Traduley", "Traduinspiracion");
     private static Publicacion publicacion = new Publicacion();
     private static String carpeta = "";
-    private static String nombreArchivo =  "";
+    private static String nombreArchivo = "";
     Gson gson = new Gson();
 
-    public void UploadWord(MouseEvent event){
+    public void UploadWord(MouseEvent event) {
         String[] nombreAndCarpeta = new String[0];
         try {
             anchorContenerdorProgress.setVisible(true);
@@ -91,71 +91,73 @@ public class Controller implements Initializable {
             carpeta = nombreAndCarpeta[1];
         } catch (Exception e) {
             showAlert("Error", e.getMessage(), alertError);
-            log.error(e.getMessage(),e);
-        }finally {
+        } finally {
             anchorContenerdorProgress.setVisible(false);
         }
     }
 
-    public void converter(MouseEvent event){
+    public void converter(MouseEvent event) {
         try {
             anchorContenerdorProgress.setVisible(true);
             publicacion.isValidForConverter().ifPresent(convert);
         } catch (Exception e) {
-            showAlert("Error",e.getMessage(),alertError);
-            log.error(e.getMessage(),e);
-        }finally {
+            showAlert("Error", e.getMessage(), alertError);
+        } finally {
             anchorContenerdorProgress.setVisible(false);
+            System.out.println();
         }
     }
+
     public Consumer<IPublicacion> convert = (p) -> {
         try {
-            converterToFileJson(p,carpeta,nombreArchivo,gson);
+            converterToFileJson(p, carpeta, nombreArchivo, gson);
             publicacion = new Publicacion();
-            showAlert("Proceso terminado","Archivo procesado puede encontrar el archivo .Json en : "+carpeta,alertInformation);
+            showAlert("Proceso terminado", "Archivo procesado puede encontrar el archivo .Json en : " + carpeta, alertInformation);
             clearAllForm(
-                    Arrays.asList(inputNombreImg,inputCategoria,inputAutores,inputKeyDefinicion,inputDefinicion,inputKeyUrl,inputUrl),
+                    Arrays.asList(inputNombreImg, inputCategoria, inputAutores, inputKeyDefinicion, inputDefinicion, inputKeyUrl, inputUrl),
                     Arrays.asList(comboTiposPublicacion),
-                    Arrays.asList(lstViewAutores,lstViewDefiniciones,lstViewLinks)
+                    Arrays.asList(lstViewAutores, lstViewDefiniciones, lstViewLinks)
             );
         } catch (IOException e) {
-            showAlert("Error interno",e.getMessage(),alertError);
-            log.error(e.getMessage(),e);
+            showAlert("Error interno", e.getMessage(), alertError);
         }
     };
-    public void  addAdutors(MouseEvent event){
-        new Autor(inputAutores.getText()).isValidOptional().ifPresent( autor -> addAutor(autor,lstViewAutores,publicacion,inputAutores));
+
+    public void addAdutors(MouseEvent event) {
+        new Autor(inputAutores.getText()).isValidOptional().ifPresent(autor -> addAutor(autor, lstViewAutores, publicacion, inputAutores));
     }
-    public void  addDefinicion(MouseEvent event){
-        new Dicionario(inputKeyDefinicion.getText(),inputDefinicion.getText(),Publicacion.DEFINICIONNAME).isValidOpcional().ifPresent( definition -> FormUtilitarios.addDefinicion(publicacion,lstViewDefiniciones,Arrays.asList(inputKeyDefinicion,inputDefinicion),definition));
+
+    public void addDefinicion(MouseEvent event) {
+        new Dicionario(inputKeyDefinicion.getText(), inputDefinicion.getText(), Publicacion.DEFINICIONNAME).isValidOpcional().ifPresent(definition -> FormUtilitarios.addDefinicion(publicacion, lstViewDefiniciones, Arrays.asList(inputKeyDefinicion, inputDefinicion), definition));
     }
-    public void addLink(MouseEvent event){
-        new Dicionario(inputKeyUrl.getText(),inputUrl.getText(),Publicacion.LINKSNAME).isValidOpcional().ifPresent(link -> FormUtilitarios.addDefinicion(publicacion,lstViewLinks,Arrays.asList(inputKeyUrl,inputUrl),link));
+
+    public void addLink(MouseEvent event) {
+        new Dicionario(inputKeyUrl.getText(), inputUrl.getText(), Publicacion.LINKSNAME).isValidOpcional().ifPresent(link -> FormUtilitarios.addDefinicion(publicacion, lstViewLinks, Arrays.asList(inputKeyUrl, inputUrl), link));
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         comboTiposPublicacion.setItems(itemsTipoPublicacion);
 
         inputNombreImg.textProperty()
-                .addListener( (obs,oldText,newText) -> publicacion.setImg(newText));
+                .addListener((obs, oldText, newText) -> publicacion.setImg(newText));
 
         inputCategoria.textProperty()
-                .addListener( (obs,oldTex,newText)-> publicacion.getTipo().setCategoria(newText) );
+                .addListener((obs, oldTex, newText) -> publicacion.getTipo().setCategoria(newText));
 
         comboTiposPublicacion.getSelectionModel().
                 selectedItemProperty().
-                addListener((options, value, newValue)-> publicacion.getTipo().setTipoPublicacion(newValue));
+                addListener((options, value, newValue) -> publicacion.getTipo().setTipoPublicacion(newValue));
 
         itemForProgress.setQuantityI(0);
-        itemForProgress.quantityProperty().addListener((observable,oldValue,newValue) -> progresIndicator.progressProperty().bind(itemForProgress.quantityProperty()));
+        itemForProgress.quantityProperty().addListener((observable, oldValue, newValue) -> progresIndicator.progressProperty().bind(itemForProgress.quantityProperty()));
 
-        lstViewAutores.addEventHandler(MouseEvent.MOUSE_CLICKED,(e) -> FormUtilitarios.deleteItem(publicacion,lstViewAutores,confirmation,Publicacion.AUTORSNNAME));
-        lstViewDefiniciones.addEventHandler(MouseEvent.MOUSE_CLICKED,(e) -> FormUtilitarios.deleteItem(publicacion,lstViewDefiniciones,confirmation,Publicacion.DEFINICIONNAME));
-        lstViewLinks.addEventHandler(MouseEvent.MOUSE_CLICKED,(e) -> FormUtilitarios.deleteItem(publicacion,lstViewLinks,confirmation,Publicacion.DEFINICIONNAME));
+        lstViewAutores.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> FormUtilitarios.deleteItem(publicacion, lstViewAutores, confirmation, Publicacion.AUTORSNNAME));
+        lstViewDefiniciones.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> FormUtilitarios.deleteItem(publicacion, lstViewDefiniciones, confirmation, Publicacion.DEFINICIONNAME));
+        lstViewLinks.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> FormUtilitarios.deleteItem(publicacion, lstViewLinks, confirmation, Publicacion.DEFINICIONNAME));
 
-        MySite.addEventHandler(MouseEvent.MOUSE_CLICKED,(e) -> {
-            if(Desktop.isDesktopSupported())
-            {
+        MySite.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (Desktop.isDesktopSupported()) {
                 try {
                     Desktop.getDesktop().browse(new URI("https://frankcv12345.github.io/"));
                 } catch (IOException e1) {

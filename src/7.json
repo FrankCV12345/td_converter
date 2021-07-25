@@ -1,0 +1,45 @@
+{
+  "id": 7,
+  "tituloPublicacion": "LA CONTRATACIÓN PÚBLICA",
+  "img": "img-inscripcion.jpg",
+  "introducion": [
+    {
+      "parrafo": "En algún momento te has preguntado ¿cómo el Estado se abastece de productos para brindar un buen servicio o cumplir con sus funciones? Pues bien, para poder hacerlo, el Estado debe contratar con ciertas entidades o personas naturales a las que se les denomina “proveedores del Estado”, pero este contrato no es antojadizo, debe seguir un procedimiento. En el siguiente TraduTema te explicamos los puntos básicos para que se lleve a cabo una contratación con el Estado, a la cual se le llamará “Contratación Pública”"
+    }
+  ],
+  "temas": [
+    {
+      "subtitulo": "¿Qué es la contratación pública?",
+      "parrafos": [
+        {
+          "parrafo": "Proceso a través del cual una entidad pública se abastece de bienes, servicios y obras de manera oportuna y bajo las mejores condiciones de precio y calidad, para la satisfacción de una finalidad pública que busca mejorar las condiciones de vida de los ciudadanos."
+        },
+        {
+          "parrafo": ""
+        },
+        {
+          "parrafo": "Las contrataciones públicas se realizan para satisfacer una necesidad pública, logrando resultados en beneficio de la población."
+        }
+      ]
+    },
+    {
+      "subtitulo": "¿Para qué se realizan las contrataciones públicas?",
+      "parrafos": [
+        {
+          "parrafo": "Proceso a través del cual una entidad pública se abastece de bienes, servicios y obras de manera oportuna y bajo las mejores condiciones de precio y calidad, para la satisfacción de una finalidad pública que busca mejorar las condiciones de vida de los ciudadanos."
+        }
+      ]
+    }
+  ],
+  "tipo": {
+    "tipoPublicacion": "Tradutema",
+    "categoria": "Derecho Registral"
+  },
+  "fecha": "Jul 10, 2020 1:55:23 PM",
+  "definiciones": [],
+  "autores": [
+    {
+      "nombre": "Massiel LL.D "
+    }
+  ]
+}
